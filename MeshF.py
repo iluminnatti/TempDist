@@ -21,6 +21,7 @@ class MeshF(object):
         self.deltay = ly/ny
 
         self.nodes = self.map()
+        self.borders = self.border()
 
     def map(self):
         '''
