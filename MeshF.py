@@ -1,3 +1,4 @@
+from email import message_from_string
 import numpy as np
 
 
@@ -20,6 +21,7 @@ class MeshF(object):
         self.deltay = ly/ny
 
         self.nodes = self.map()
+        self.borders = self.border()
 
     def map(self):
         '''
@@ -56,3 +58,49 @@ class MeshF(object):
         a coordenada de cada nó.
         '''
         return nodes
+
+    def border(self):
+        '''
+        Responsável por identificar quem são os nós vizinhos de um determinado nó dado, usando 
+        uma nomenclatura baseada em pontos cardeais para identificar cada vizinho ['N', 'S', 'W', 'E'].
+        Além disso, identifica também se algum vizinho está em alguma das bordas (considera-se por 'borda'
+        qualquer região que esteja tão proximo da borda quanto desejado, dentro de um certo 'erro máximo'), 
+        e atribui a esse vizinho o valor -1 para identificar que este encontra-se em uma borda.
+             N
+             |
+        W -- n -- E
+             |
+             S
+        '''
+        nx = self.nx
+        ny = self.ny
+        lx = self.lx
+        ly = self.ly 
+        deltax = self.deltax
+        deltay = self.deltay
+
+        if(deltax < deltay):
+            fac = deltax
+        else:
+            fac = deltay
+
+        error = 1e-6 * fac
+
+        ident = ['W', 'E', 'S', 'N']
+        borders = [None] * (nx*ny)
+        for i, el in enumerate(self.nodes):
+            cord_x = el[0]
+            cord_y = el[1]
+
+            border = np.array([i - 1, i + 1, i - nx, i + nx])
+            w_bord = abs(cord_x) <= error
+            e_bord = abs(cord_x - lx) <= error
+            n_bord = abs(cord_y - ly) <= error
+            s_bord = abs(cord_y) <= error
+
+            bc = np.array([w_bord, e_bord, s_bord, n_bord])
+            border[bc] = -1
+
+            borders[i] = dict(zip(ident, border))
+        
+        return borders
