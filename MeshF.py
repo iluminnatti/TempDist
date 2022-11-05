@@ -1,4 +1,3 @@
-from email import message_from_string
 import numpy as np
 
 
@@ -72,19 +71,14 @@ class MeshF(object):
              |
              S
         '''
-        nx = self.nx
-        ny = self.ny
+        nx = self.nx+1
+        ny = self.ny+1
         lx = self.lx
         ly = self.ly 
         deltax = self.deltax
         deltay = self.deltay
 
-        if(deltax < deltay):
-            fac = deltax
-        else:
-            fac = deltay
-
-        error = 1e-6 * fac
+        error = 1e-6 * min(deltax, deltay)
 
         ident = ['W', 'E', 'S', 'N']
         borders = [None] * (nx*ny)
