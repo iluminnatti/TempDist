@@ -1,21 +1,29 @@
 import numpy as np
 from time import perf_counter
+import pickle
 
-from GetData import GetData
+#from GetData import GetData
+from interface import collect_data
 from MeshF import MeshF
 from plots import plot_field
 
 #Dados recebidos pelo módulo GetData
-confirms, data, lx, ly, nx, ny, k = GetData()
-'''
-confirms = ['n', 'n', 'n', 'y']
-data = [(500, 0), (500, 0), (500, 0), (300, 10)]
-lx = 1
-ly = 1
-nx = 50
-ny = 50
-k = 1
-'''
+#confirms, data, lx, ly, nx, ny, k = GetData()
+
+#Dados recebidos pela interface
+collect_data()
+f = pickle.load( open("data.npy", 'rb') )
+confirms, data, lx, ly, nx, ny, k = f['con'], f['dat'], f['lx'], f['ly'], int(f['nx']), int(f['ny']), f['k']
+
+#Inserção de dados manual
+# confirms = ['n', 'n', 'n', 'y']
+# data = [(500, 0), (500, 0), (500, 0), (300, 10)]
+# lx = 1
+# ly = 1
+# nx = 50
+# ny = 50
+# k = 1
+
 
 #construção da malha
 mesh = MeshF(nx-1, ny-1, lx, ly)
@@ -47,6 +55,21 @@ for i in range(0, 4):
     elif(i == 3):
         C.append('W')    
 
+#printando as condições de fronteira para facilitar 
+# conferência dos resultados
+for i in range(0, 4):
+    if(confirms[i] == 'y'):
+        print(f"Fronteira {i+1} ({C[i]}) convectiva")
+    elif(confirms[i] == 'n'):
+        print(f"Fronteira {i} ({C[i]}) condutiva")
+    print(f'Temperatura: {T_real[0][i]}')
+    print(f"Coeficiente de convecção: {data[i][1]}")
+print(f'condutividade térmica do condutor: {k}')
+print(f'Dimensões do condutor: {ly}X{lx}')
+print(f'Dimensão da malha nodal: {ny}X{nx}')
+
+#gera os coefs das equações de balanço de energia para os
+#nós convectivos
 def boundary2(hk, Tc):
     '''Calcula os termos da equação linear para nós do tipo
     centro da borda convectiva:
@@ -63,10 +86,11 @@ def boundary2(hk, Tc):
 
     return a
 
-#Equação matricial a ser resolvida [A][T] = [B]. Criaremos uma matriz [Tp] = [A][B]
+#Equação matricial a ser resolvida [A][T] = [B]. 
+# Criaremos uma matriz [Tp] = [A][B]
 
 dof = (nx)*(ny)
-u_dof = np.ones(dof, dtype=bool) #guarda quais nós tem temperatura por fronteira condutora
+u_dof = np.ones(dof, dtype=bool) #guarda quais nós tem temperatura já coonhecida, pois está na fronteira condutora (true se não, false se sim)
 
 Temperatures = np.ones(dof)*T_real[0][0] #1° chute
 B = np.zeros(dof)
@@ -106,11 +130,13 @@ for i, node in enumerate(mesh.borders):
             elif(node['W'] == -1 and 'W' in cond):
                 T_w = T_real[0][3] #dá pra usar for i in cond:
             if (value != -1):
-                #se o nó não está em alguma borda, meu chute é a 1° temperatura inserida (fronteira norte)
+                #se o nó não está em alguma borda (mas algum vizinho está), soma em B a contribuição desse vizinho 
                 B[value] += T_w #temperatura da fronteira analisada aqui
 
-        Temperatures[i] = T_w
-        u_dof[i] = False
+        #caso contrário (algum vizinho na borda e próprio nó na borda), 
+        # a temperatura do nó é conhecida, pois é a temperatura da própria borda!
+        Temperatures[i] = T_w 
+        u_dof[i] = False #registra na matriz booleana que essa temperatura já é conhecida
     elif(cont2 != 0):
 
 
