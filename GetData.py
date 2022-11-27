@@ -5,7 +5,7 @@ def GetData():
     data = []
 
     #fronteira1
-    conf1 = str(input(f"A fronteira 1 tem contato com fluido externo (y/n)? "))
+    conf1 = str(input(f"A fronteira Norte tem contato com fluido externo (y/n)? "))
     confs.append(conf1)
     if(conf1 == 'y'):
         h1 = float(input("Digite o coeficiente de transferência de calor por condução do fluido (h): "))
@@ -17,7 +17,7 @@ def GetData():
         data.append( (T_1, h1) )
 
     #fronteira2
-    conf2 = str(input(f"A fronteira 2 tem contato com fluido externo (y/n)? "))
+    conf2 = str(input(f"A fronteira Leste tem contato com fluido externo (y/n)? "))
     confs.append(conf2)
     if(conf2 == 'y'):
         h2 = float(input("Digite o coeficiente de transferência de calor por condução do fluido (h): "))
@@ -29,7 +29,7 @@ def GetData():
         data.append( (T_2, h2) )
 
     #fronteira3
-    conf3 = str(input(f"A fronteira 3 tem contato com fluido externo (y/n)? "))
+    conf3 = str(input(f"A fronteira Sul tem contato com fluido externo (y/n)? "))
     confs.append(conf3)
     if(conf3 == 'y'):
         h3 = float(input("Digite o coeficiente de transferência de calor por condução do fluido (h): "))
@@ -41,7 +41,7 @@ def GetData():
         data.append( (T_3, h3) )
 
     #fronteira4
-    conf4 = str(input(f"A fronteira 4 tem contato com fluido externo (y/n)? "))
+    conf4 = str(input(f"A fronteira Oeste tem contato com fluido externo (y/n)? "))
     confs.append(conf4)
     if(conf4 == 'y'):
         h4 = float(input("Digite o coeficiente de transferência de calor por condução do fluido (h): "))
