@@ -1,4 +1,4 @@
- <i>TempDist: A Scientific Software For Termal Simulations</i>
+ <i>TempDist: A Scientific Software For Thermal Simulations</i>
 ==========================================================
 <p style="font-family: monospace;">TempDist is a python-based software that uses the finite-difference method and the Gauss-Seidel's method to find and plot the temperature distribution in a conducting material.</p> 
 
