@@ -229,7 +229,7 @@ end_time = perf_counter()
 print(f'Tempo de execução: {end_time - start_time}')
 print(f'Número de iterações: {it}')
 print(f'Erro: {diff}')
-print(f'Temperatura no centro da face sul: {Tuu[int(np.floor(nx/2))]}')
+#print(f'Temperatura no centro da face sul: {Tuu[int(np.floor(nx/2))]}')
 
 # Plots
 Tplot = np.ones(dof)
@@ -251,3 +251,8 @@ for i, tp in enumerate(u_dof):
 
 shading = 'nearest'
 plot_field(nx, ny, lx, ly, Tplot)
+
+tmat = open('FigFinal/temps.txt', 'w')
+
+np.savetxt('FigFinal/temps.txt', Tuu, fmt="%.4e", delimiter=" ")
+tmat.close()
