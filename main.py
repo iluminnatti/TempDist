@@ -133,7 +133,7 @@ for i, node in enumerate(mesh.borders):
                 #se o nó não está em alguma borda (mas algum vizinho está), soma em B a contribuição desse vizinho 
                 B[value] += T_w #temperatura da fronteira analisada aqui
 
-        #caso contrário (algum vizinho na borda e próprio nó na borda), 
+        #caso contrário (algum vizinho na borda e o próprio nó na borda), 
         # a temperatura do nó é conhecida, pois é a temperatura da própria borda!
         Temperatures[i] = T_w 
         u_dof[i] = False #registra na matriz booleana que essa temperatura já é conhecida
