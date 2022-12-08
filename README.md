@@ -49,7 +49,7 @@ In a folder on your device, open powershell/terminal and type the following comm
 $ git clone https://www.github.com/iluminnatti/TempDist.git
 ```
 
-<p style="font-family: monospace;">Once the files have been downloaded, you must install python and the python libraries used in this project. Get python <a href="https://www.python.org/downloads/">here</a> for Widows. For ubuntu, do the following in terminal (OBS: make sure you are logged in as a <a href="https://linuxize.com/post/how-to-create-a-sudo-user-on-ubuntu/">user with sudo privileges</a>):</p>
+<p style="font-family: monospace;">Once the files have been downloaded, you must install python and the python libraries used in this project. Get python <a href="https://www.python.org/downloads/">here</a> for Windows. For ubuntu, do the following in terminal (OBS: make sure you are logged in as a <a href="https://linuxize.com/post/how-to-create-a-sudo-user-on-ubuntu/">user with sudo privileges</a>):</p>
 
 ```powershell
 $ sudo apt update 
