@@ -134,7 +134,7 @@ When sending the data and closing the window, the software will operate the data
    + North boundary: 
       + Convective; 
       + Fluid temperature: 300 K (room temperature);
-      + Founduction heat transfer coefficient: 5-25 W/m².K (natural convection);
+      + Convection heat transfer coefficient: 5-25 W/m².K (natural convection of the air);
    + East boundary:
       + Conductive; 
       + Temperature: 500 K (~227°C);
@@ -155,14 +155,14 @@ When sending the data and closing the window, the software will operate the data
    + North boundary: 
       + Convective; 
       + Fluid temperature: 327 K (~54°C);
-      + Founduction heat transfer coefficient: 5-25 W/m².K (natural convection);
+      + Convection heat transfer coefficient: 5-25 W/m².K (natural convection of the air);
    + East boundary:
       + Conductive; 
       + Temperature: 594 K (~321°C);
    + South boundary:
       + Convective; 
       + Fluid temperature: 297 K (~24°C);
-      + Founduction heat transfer coefficient: 5-25 W/m².K (natural convection);
+      + Convection heat transfer coefficient: 5-25 W/m².K (natural convection of the air);
    + West boundary:
       + Conductive; 
       + Temperature: 671 K (~398°C);
@@ -172,6 +172,29 @@ When sending the data and closing the window, the software will operate the data
 
 >Result:
 <img src="Usage_tutorial_images/ex2.png">
+
+3. Three convective borders
+   + North boundary: 
+      + Convective; 
+      + Fluid temperature: 297 K (~24°C);
+      + Convection heat transfer coefficient: 300-6000 W/m².K (forced convection of the water);
+   + East boundary:
+      + Convective; 
+      + Fluid temperature: 345 K (~72°C);
+      + Convection heat transfer coefficient: 300-6000 W/m².K (forced convection of the water);
+   + South boundary:
+      + Conductive; 
+      + Temperature: 593 K (~320°C);
+   + West boundary:
+      + Convective; 
+      + Fluid temperature: 276 K (~3°C);
+      + Convection heat transfer coefficient: 300-6000 W/m².K (forced convection of the water);
+   + Thermal conductivity: ~35 W/m.K(Steel - Carbon 1.5% C at nearly 600 K);
+   + Conductor Dimensions: 20m x 20m;
+   + Mesh size: 60 x 60;
+
+>Result:
+<img src="Usage_tutorial_images/ex3.png">
 
 ------------------------------------------------------
 ## <i> Author </i>
