@@ -16,12 +16,12 @@ f = pickle.load( open("data.npy", 'rb') )
 confirms, data, lx, ly, nx, ny, k = f['con'], f['dat'], f['lx'], f['ly'], int(f['nx']), int(f['ny']), f['k']
 
 #Inserção de dados manual
-# confirms = ['n', 'n', 'n', 'y']
-# data = [(500, 0), (500, 0), (500, 0), (300, 10)]
+# confirms = ['y', 'n', 'n', 'y']
+# data = [(300, 10), (500, 00), (500, 00), (300, 10)]
 # lx = 1
 # ly = 1
-# nx = 50
-# ny = 50
+# nx = 20
+# ny = 20
 # k = 1
 
 
@@ -86,6 +86,22 @@ def boundary2(hk, Tc):
 
     return a
 
+def boundary3(hk, Tc):
+    '''Calcula os termos da equação linear para nós do tipo
+    quina de duas bordas convectivas:
+    Ap*Tp + Aw*Tw + Ae*Te + An*Tn + bc*Tc = 0
+    [ap, aw, As, an, bc]
+    '''
+    ap = -2*(hk + 1)
+    an = 0
+    As = 1
+    aw = 1
+    bc = 2*hk*Tc
+
+    a = np.array([ap, aw, As, an, bc])
+
+    return a
+
 #Equação matricial a ser resolvida [A][T] = [B]. 
 # Criaremos uma matriz [Tp] = [A][B]
 
@@ -145,8 +161,60 @@ for i, node in enumerate(mesh.borders):
         ae = 1
         aw = 1
         '''
+        #segundo caso
+        '''[ap, aw, As, an, bc]
+        aw = 1
+        As = 1
+        an = 0
+        bp
+        '''
+        # poss = [0, nx-1, dof-nx, -1]
+        if(node['N'] == -1 and 'N' in conv and node['E'] == -1 and 'E' in conv):
+            T_d = T_real[0][0]
+            h_k = T_real[1][0]
+            a = boundary3(hk, T_d)
 
-        if(node['N'] == -1 and 'N' in conv):
+            A[i, i] = a[0]
+            A[i, node['W']] = a[1]
+            # A[i, node['E']] = a[2]
+            A[i, node['S']] = a[2]
+
+            B[i] += a[4]
+        elif(node['E'] == -1 and 'E' in conv and node['S'] == -1 and 'S' in conv):
+            T_d = T_real[0][1]
+            h_k = T_real[1][1]
+            a = boundary3(hk, T_d)
+
+            A[i, i] = a[0]
+            A[i, node['W']] = a[1]
+            # A[i, node['E']] = a[2]
+            A[i, node['N']] = a[2]
+
+            B[i] += a[4]
+        elif(node['S'] == -1 and 'S' in conv and node['W'] == -1 and 'W' in conv):
+            T_d = T_real[0][2]
+            h_k = T_real[1][2]
+            a = boundary3(hk, T_d)
+
+            A[i, i] = a[0]
+            #A[i, node['W']] = a[1]
+            A[i, node['E']] = a[1]
+            A[i, node['N']] = a[2]
+
+            B[i] += a[4]
+        elif(node['W'] == -1 and 'W' in conv and node['N'] == -1 and 'N' in conv):
+            T_d = T_real[0][3]
+            h_k = T_real[1][3]
+            a = boundary3(hk, T_d)
+
+            A[i, i] = a[0]
+            #A[i, node['W']] = a[1]
+            A[i, node['E']] = a[1]
+            A[i, node['S']] = a[2]
+
+            B[i] += a[4]
+        # casos corretos abaixo
+        elif(node['N'] == -1 and 'N' in conv):
             T_d = T_real[0][0]
             hk = T_real[1][0]
             a = boundary2(hk, T_d)
@@ -190,6 +258,7 @@ for i, node in enumerate(mesh.borders):
             A[i, node['E']] = a[3]
 
             B[i] += a[4]
+
 
     else:
         A[i, i] = -4
@@ -240,8 +309,9 @@ for j in range(dof-nx, dof):
 for i in range(0, ny):
     Tplot[i*nx] = T_real[0][3]#esquerda
     Tplot[i*nx + nx - 1] = T_real[0][1]#direita
-    #Tplot[dof-nx] = 0.5*(T_real[0][0] + T_real[0][3])
-    #Tplot[dof-1] = 0.5*(T_real[0][0] + T_real[0][1])#fazer isso aqui geral
+    
+    # Tplot[nx-1] = 0.5*(T_real[0][1] + T_real[0][2])
+    # Tplot[0] = 0.5*(T_real[0][2] + T_real[0][3])
 j = 0
 
 for i, tp in enumerate(u_dof):
